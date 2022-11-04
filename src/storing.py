@@ -82,6 +82,16 @@ def store_collection_into_db(cluster_name, database_name, collection_name, data)
     collection.insert_many(data)
     
     
+def read_collection(cluster_name, database_name, collection_name, condition={}):
+    '''
+    condition: 'all' or dict that contains conditions of query
+    '''
+    client = connect_cluster_mongodb(cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD)
+    database = connect_database(client, database_name)
+    collection = connect_collection(database, collection_name)
+    
+    return collection.find(condition)
+    
     
 def main():
     students = [
