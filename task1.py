@@ -1,6 +1,7 @@
 from src.acquisition import *
 from src.storing import *
 from src.statistics import *
+from src.auth import *
 
 ORG = "google"
 CLUSTER_NAME = "daps2022"
@@ -13,18 +14,12 @@ def solve_task1_1():
     
 def solve_task1_2():
     collection = read_collection(CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME)
-    stargazers_distribution = collection['stargazers_count']
+    df = pd.DataFrame(list(collection))
+    stargazers_distribution = df['stargazers_count']
     stats = aggregate_statistics(stargazers_distribution)
     
     return stats
     
-    
-    
-    
-    
-    
-    
-
 def solve_task1_3():
     raise NotImplementedError
 
@@ -40,7 +35,7 @@ def solve_task1():
     
     
 def main():
-    solve_task1_2()
+    print(solve_task1_2())
     
     
 if __name__=="__main__":

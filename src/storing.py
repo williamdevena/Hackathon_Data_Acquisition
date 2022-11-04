@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pymongo
 from pymongo import MongoClient
-from auth import *
+from src.auth import *
 import logging
 
 logging.basicConfig(level=logging.INFO)

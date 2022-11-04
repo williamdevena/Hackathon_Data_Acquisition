@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import logging
-from storing import *
+from src.storing import *
 
 logging.basicConfig(level=logging.INFO)
 

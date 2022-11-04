@@ -4,7 +4,8 @@ import requests
 from urllib.parse import urljoin
 import os
 import logging
-from auth import *
+from src.storing import *
+from src.auth import *
 
 # To not show username and password the variables GITHUB_USERNAME and GITHUB_PASSWORD
 # are stored in a separate file that are not push remotely
