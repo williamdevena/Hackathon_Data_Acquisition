@@ -49,13 +49,6 @@ In the case of incremental submission, such as submitting only task 1 and then o
 This is a key requirement as it triggers automated scoring for your code, which is a necessary requirement for this assignment, and for the final one.
 
 
-# Tasks
-Now that we have our stage set up, let's dive into the tasks briefs.
-Task 1 is designed as a primer, and to be solved in 3 hours in class.
-The task is split into 4 subtasks. We will stop for 15 minutes every 30 minutes (a total of 4 times) to checkpoint on the completion of each subtask.
-At each checkpoint, we review your progresses, answer questions, and provide the solution to the subtask.
-We will solve the rest of the tasks in the next hackathon session.
-
 
 ## Task 1: Aggregated statistics
 Consider the empirical distribution represented by the number of stargazers (stars) in each repository in the organisation, https://github.com/google.
