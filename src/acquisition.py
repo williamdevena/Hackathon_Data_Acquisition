@@ -1,3 +1,7 @@
+'''
+This module contains the functions to retrieve data from the github api
+'''
+
 import numpy as np
 import pandas as pd
 import requests

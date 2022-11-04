@@ -1,3 +1,7 @@
+'''
+This module contains the functions to store and read from a MongoDB database
+'''
+
 import numpy as np
 import pandas as pd
 import pymongo
@@ -84,7 +88,17 @@ def store_collection_into_db(cluster_name, database_name, collection_name, data)
     
 def read_collection(cluster_name, database_name, collection_name, condition={}):
     '''
-    condition: 'all' or dict that contains conditions of query
+    Reads from a MongoDB database a certain collection and if given querys with certain conditions.
+    
+    Args:
+        - cluster_name (str): Name of the MongoDB cluster
+        - database_name (str): Name of the MongoDB database
+        - collection_name (str): Name of the MongoDB collection
+        - condition (dict): Dictionary containing the conditions of the query. 
+        (EX: condition = {'name' : 'William'} gets all the documents of the collection that have 'name'='William')
+        
+    Returns:
+        - A MongoDB collection object
     '''
     client = connect_cluster_mongodb(cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD)
     database = connect_database(client, database_name)
