@@ -6,13 +6,22 @@ import numpy as np
 import pandas as pd
 import pymongo
 from pymongo import MongoClient
-from src.auth import *
+from auth import *
 import logging
 
 logging.basicConfig(level=logging.INFO)
 
 # To not show username and password the variables MONGODB_USERNAME and MONGODB_PASSWORD
 # are stored in a separate file that are not push remotely
+
+def aggregate_collection(cluster_name, database, collection_name, aggregate_pipeline):
+    client = connect_cluster_mongodb(cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD)
+    database = connect_database(client, database)
+    collection = connect_collection(database, collection_name)
+    #print(collection)
+    aggr_result= collection.aggregate(aggregate_pipeline)
+    
+    return aggr_result
 
 def connect_cluster_mongodb(cluster_name, username, password):
     '''
@@ -108,16 +117,20 @@ def read_collection(cluster_name, database_name, collection_name, condition={}):
     
     
 def main():
-    students = [
-        {'name':'William', 'age':149},
-        {'name':'Willidsfam', 'age':194},
-        {'name':'Willsdiam', 'age':129},
-        {'name':'Willcdciam', 'age':169},
+    cluster = "daps2022"
+    database = "hackathon_DAPS"
+    collection = "google_jax_commits"
+    aggregate_pipeline = [
+        {"$addFields": {"date": "$commit.author.date"}},
+        {"$project": {"date": {"$arrayElemAt": [{"$split": ["$date", "T"]}, 0]}}},
+        {"$project": {"date": {"$toDate": "$date"}}},
+        {"$group": {"_id": "$date", "count": {"$sum": 1}}},
+        {"$sort": {"_id": 1}},
+        {"$project": {"date": "$_id", "count": "$count"}},
     ]
-    cluster_name = "daps2022"
-    db_name = "test_db4"
-    col_name = "students" 
-    store_collection_into_db(cluster_name, db_name, col_name, students)
+    result = aggregate_collection(cluster, database, collection, aggregate_pipeline)
+    print(list(result)[0])
+    
     
 if __name__=="__main__":
     main()

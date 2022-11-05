@@ -6,7 +6,6 @@ This module contains the functions to process statistics on some kind of distrib
 import numpy as np
 import pandas as pd
 import logging
-from src.storing import *
 
 logging.basicConfig(level=logging.INFO)
 
