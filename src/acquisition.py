@@ -1,5 +1,5 @@
 '''
-This module contains the functions to retrieve data from the github api
+This module contains the functions to retrieve data from urls
 '''
 
 import numpy as np
@@ -9,6 +9,7 @@ from urllib.parse import urljoin
 import os
 import logging
 import sys
+
 sys.path.append('./src/')
 
 from auth import *
@@ -19,7 +20,7 @@ AUTH = (GITHUB_USERNAME, GITHUB_TOKEN)
 
 logging.basicConfig(level=logging.INFO)
 
-def retrieve_data_from_url(base_url, start_page=1, max_page=100):
+def retrieve_data_from_url(base_url, conditions=[], start_page=1, max_page=100):
     '''
     Retrieves the data from a url
     
@@ -36,7 +37,7 @@ def retrieve_data_from_url(base_url, start_page=1, max_page=100):
     logging.info(f"Starting retrieving data from {base_url}")
     page=start_page
     while True:
-        json_data = request_json_page_data(base_url=base_url, page=page, per_page=100)     
+        json_data = request_json_page_data(base_url=base_url, conditions=conditions, page=page, per_page=100)     
         if len(json_data)==0 or page>max_page:
             break 
         for repo in json_data:
@@ -46,38 +47,7 @@ def retrieve_data_from_url(base_url, start_page=1, max_page=100):
         
     return array_total_data
 
-
-
-# def retrieve_org_repos_data(org, start_page=1, max_page=100):
-#     '''
-#     Retrieves the data of all repositories of a organziation on github, using githb api
-    
-#     Args:
-#         - org (str): the organziation name (EX: google)
-#         - start_page (int): the number of the page from which we want to start collecting
-#         (used when we want to restart a stopped retrieving)
-#         - max_page (int): maximum number of pages we wnat collect the data from
-        
-#     Returns:
-#         - array_total_repos (array): Contains all the repos in the form of Dictionaries
-#     '''
-    
-#     array_total_repos = []  # array that contains all the repos in the form of a Dict
-#     base_url = os.path.join(GITHUB_API_ENTRYPOINT, "orgs", org, "repos")
-#     logging.info(f"Starting retrieving data from {base_url}")
-#     page=start_page
-#     while True:
-#         json_data = request_json_page_data(base_url=base_url, page=page, per_page=100)     
-#         if len(json_data)==0 or page>max_page:
-#             break 
-#         for repo in json_data:
-#             array_total_repos.append(repo)
-#         logging.info(f"Retrieved data from page {page}")
-#         page+=1
-        
-#     return array_total_repos      
-            
-def request_json_page_data(base_url, page, per_page, sort_per_name=False):
+def request_json_page_data(base_url, conditions, page, per_page):
     '''
     Retrieves the data of one page
     
@@ -92,10 +62,14 @@ def request_json_page_data(base_url, page, per_page, sort_per_name=False):
         - json_data (array): Contains the data retrieved from the url in form of a dictionary
     '''
     
-    if sort_per_name:
-        url_page = f"{base_url}?per_page={per_page}&page={page}&sort=name" 
-    else:
-        url_page = f"{base_url}?per_page={per_page}&page={page}"
+    # if sort_per_name:
+    #     url_page = f"{base_url}?per_page={per_page}&page={page}&sort=name" 
+    # else:
+    #     url_page = f"{base_url}?per_page={per_page}&page={page}"
+    url_page = f"{base_url}?per_page={per_page}&page={page}"
+    for condition in conditions:
+        condition_string = "&" + condition
+        url_page += condition_string
     response = send_request(url_page, auth=AUTH)
     json_data = response.json()
     
@@ -121,14 +95,10 @@ def send_request(url, auth):
     
     return response
     
-
-
-
+    
 def main():
         base_url = "https://api.github.com/repos/google/jax/commits"
-        #base_url = "https://github.com/orgs/google/repositories"
         data = retrieve_data_from_url(base_url,1, 1000)
-        #data = retrieve_org_repos_data("google")
         print(data[0])
     
 if __name__=="__main__":

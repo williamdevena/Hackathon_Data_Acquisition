@@ -1,5 +1,5 @@
 '''
-This module contains the functions to store and read from a MongoDB database
+This module contains the functions to connect to and store data into a MongoDB database
 '''
 
 import numpy as np
@@ -14,9 +14,22 @@ logging.basicConfig(level=logging.INFO)
 # To not show username and password the variables MONGODB_USERNAME and MONGODB_PASSWORD
 # are stored in a separate file that are not push remotely
 
-def aggregate_collection(cluster_name, database, collection_name, aggregate_pipeline):
+def aggregate_collection(cluster_name, database_name, collection_name, aggregate_pipeline):
+    '''
+    Executes a aggregate query in a MongoDB database
+    
+    Args:
+        - cluster_name (str): name of the cluster 
+        - database_name (str): name of the database
+        - collection_name (str): name of the collection
+        - aggregate_pipeline (list): contains the aggregate pipeline in the form of a list of dictionaries (see MongoDb docs for more detailsx)
+        
+    Retuns:
+        - aggr_result (list): contains the result of the aggregate query
+
+    '''
     client = connect_cluster_mongodb(cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD)
-    database = connect_database(client, database)
+    database = connect_database(client, database_name)
     collection = connect_collection(database, collection_name)
     #print(collection)
     aggr_result= collection.aggregate(aggregate_pipeline)
@@ -25,7 +38,7 @@ def aggregate_collection(cluster_name, database, collection_name, aggregate_pipe
 
 def connect_cluster_mongodb(cluster_name, username, password):
     '''
-    Opens connections with a MongoDB cluster
+    Opens a connection with a MongoDB cluster
     
     Args:
         - cluster_name (str): name of the cluster 
@@ -93,28 +106,7 @@ def store_collection_into_db(cluster_name, database_name, collection_name, data)
     database = connect_database(client, database_name)
     collection = connect_collection(database, collection_name)
     collection.insert_many(data)
-    
-    
-def read_collection(cluster_name, database_name, collection_name, condition={}):
-    '''
-    Reads from a MongoDB database a certain collection and if given querys with certain conditions.
-    
-    Args:
-        - cluster_name (str): Name of the MongoDB cluster
-        - database_name (str): Name of the MongoDB database
-        - collection_name (str): Name of the MongoDB collection
-        - condition (dict): Dictionary containing the conditions of the query. 
-        (EX: condition = {'name' : 'William'} gets all the documents of the collection that have 'name'='William')
-        
-    Returns:
-        - A MongoDB collection object
-    '''
-    client = connect_cluster_mongodb(cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD)
-    database = connect_database(client, database_name)
-    collection = connect_collection(database, collection_name)
-    
-    return collection.find(condition)
-    
+       
     
 def main():
     cluster = "daps2022"
@@ -130,7 +122,6 @@ def main():
     ]
     result = aggregate_collection(cluster, database, collection, aggregate_pipeline)
     print(list(result)[0])
-    
     
 if __name__=="__main__":
     main()

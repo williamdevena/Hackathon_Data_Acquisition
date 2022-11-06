@@ -20,6 +20,7 @@ def visualize_time_series_aggregate(aggregate):
     plt.plot(x,y)
     plt.show()
     
+    
 def main():
     pass
 

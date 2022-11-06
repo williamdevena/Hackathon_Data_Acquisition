@@ -5,8 +5,8 @@ Solves task 1 of the Hackathon
 from src.acquisition import *
 from src.storing import *
 from src.statistics import *
+from src.reading import *
 from src.costants import ORG, CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME_REPOS, GITHUB_API_ENTRYPOINT
-
 
 def solve_task1_1():
     '''
@@ -36,10 +36,10 @@ def solve_task1():
     
     return stats
     
+    
 def main():
     stats = solve_task1()
-    
-    return stats
+    print(stats)
     
 if __name__=="__main__":
     main()

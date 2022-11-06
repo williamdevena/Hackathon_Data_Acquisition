@@ -8,7 +8,6 @@ from src.statistics import *
 from src.visualizing import *
 from src.costants import ORG, CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME_JAX, GITHUB_API_ENTRYPOINT
 
-
 def solve_task2_1():
     '''
     Solves subtask 2.1 of the Hackathon
@@ -33,12 +32,10 @@ def solve_task2_2():
     
     return list(result)
 
-
 def solve_task2_3(aggregate):
     '''
     Solves subtask 2.3 of the Hackathon
     '''
-    aggregate = solve_task2_2()
     visualize_time_series_aggregate(aggregate)
     
 def solve_task2():
@@ -52,7 +49,6 @@ def solve_task2():
 
 def main():
     solve_task2()
-
-    
+   
 if __name__=="__main__":
     main()
