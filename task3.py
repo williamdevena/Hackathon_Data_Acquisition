@@ -18,7 +18,7 @@ def solve_task3_1():
     retrieve_conditions = ["state=all"]
     data = retrieve_data_from_url(base_url, retrieve_conditions, 1, 1000)
     store_collection_into_db(CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME_JAX_ISSUES, data)
-    collection = read_collection(CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME_JAX_ISSUES_CLOSED)
+    collection = read_collection(CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME_JAX_ISSUES)
     df = pd.DataFrame(list(collection))
     issue = df.loc[df['number'] == ISSUE_NUMBER]
     
@@ -44,12 +44,23 @@ def solve_task3():
     '''
     issue = solve_task3_1()
     best_comment = solve_task3_2()
+    ## Storing in the database the results
+    submission = {
+        "task-3-submission": {
+            "question": str(issue['title']),
+            "answer": str(best_comment['body']),
+        }
+    }
+    client = connect_cluster_mongodb(CLUSTER_NAME, MONGODB_USERNAME, MONGODB_PASSWORD)
+    database = connect_database(client, DATABASE_NAME)
+    collection = connect_collection(database, "answer")
+    collection.insert_one(submission)
     
     return issue, best_comment
 
 
 def main():
-    issue, best_comment = solve_task3_2()
+    issue, best_comment = solve_task3()
     print(issue, best_comment)
     
 if __name__=="__main__":

@@ -61,11 +61,6 @@ def request_json_page_data(base_url, conditions, page, per_page):
     Returns:
         - json_data (array): Contains the data retrieved from the url in form of a dictionary
     '''
-    
-    # if sort_per_name:
-    #     url_page = f"{base_url}?per_page={per_page}&page={page}&sort=name" 
-    # else:
-    #     url_page = f"{base_url}?per_page={per_page}&page={page}"
     url_page = f"{base_url}?per_page={per_page}&page={page}"
     for condition in conditions:
         condition_string = "&" + condition

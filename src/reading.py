@@ -2,7 +2,6 @@
 This module contains the functions to read data from a MongoDB database
 '''
 
-
 import sys
 
 sys.path.append('./src/')

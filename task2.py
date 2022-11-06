@@ -44,6 +44,17 @@ def solve_task2():
     '''
     solve_task2_1()
     aggregate = solve_task2_2()
+    ## Storing in the database the results
+    submission_result = [x['count'] for x in aggregate]
+    submission = {
+        "task-2-submission": {
+        "timeseries": submission_result
+        }
+    }
+    client = connect_cluster_mongodb(CLUSTER_NAME, MONGODB_USERNAME, MONGODB_PASSWORD)
+    database = connect_database(client, DATABASE_NAME)
+    collection = connect_collection(database, "answer")
+    collection.insert_one(submission)
     solve_task2_3(aggregate)   
 
 
