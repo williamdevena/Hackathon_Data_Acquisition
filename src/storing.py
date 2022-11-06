@@ -31,7 +31,6 @@ def aggregate_collection(cluster_name, database_name, collection_name, aggregate
     client = connect_cluster_mongodb(cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD)
     database = connect_database(client, database_name)
     collection = connect_collection(database, collection_name)
-    #print(collection)
     aggr_result= collection.aggregate(aggregate_pipeline)
     
     return aggr_result

@@ -2,7 +2,6 @@
 This module contains the functions to process statistics on some kind of distribution
 '''
 
-
 import numpy as np
 import pandas as pd
 import logging
