@@ -1,6 +1,6 @@
-'''
+"""
 This module contains some costants used in other modules
-'''
+"""
 
 ORG = "google"
 CLUSTER_NAME = "daps2022"
