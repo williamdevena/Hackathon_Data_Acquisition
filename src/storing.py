@@ -2,10 +2,7 @@
 This module contains the functions to connect to and store data into a MongoDB database
 """
 
-import numpy as np
-import pandas as pd
 import pymongo
-from pymongo import MongoClient
 from auth import *
 import logging
 
@@ -31,7 +28,9 @@ def aggregate_collection(
         - aggr_result (list): contains the result of the aggregate query
 
     """
-    client = connect_cluster_mongodb(cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD)
+    client = connect_cluster_mongodb(
+        cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD
+    )
     database = connect_database(client, database_name)
     collection = connect_collection(database, collection_name)
     aggr_result = collection.aggregate(aggregate_pipeline)
@@ -99,7 +98,9 @@ def connect_collection(database, collection_name):
     return collection
 
 
-def store_collection_into_db(cluster_name, database_name, collection_name, data):
+def store_collection_into_db(
+    cluster_name, database_name, collection_name, data
+):
     """
     Inserts a list of MongoDB documents (dictionaries) into a specific collection of a database of a cluster.
 
@@ -112,7 +113,9 @@ def store_collection_into_db(cluster_name, database_name, collection_name, data)
     Returns:
         - None
     """
-    client = connect_cluster_mongodb(cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD)
+    client = connect_cluster_mongodb(
+        cluster_name, MONGODB_USERNAME, MONGODB_PASSWORD
+    )
     database = connect_database(client, database_name)
     collection = connect_collection(database, collection_name)
     collection.insert_many(data)
@@ -124,13 +127,19 @@ def main():
     collection = "google_jax_commits"
     aggregate_pipeline = [
         {"$addFields": {"date": "$commit.author.date"}},
-        {"$project": {"date": {"$arrayElemAt": [{"$split": ["$date", "T"]}, 0]}}},
+        {
+            "$project": {
+                "date": {"$arrayElemAt": [{"$split": ["$date", "T"]}, 0]}
+            }
+        },
         {"$project": {"date": {"$toDate": "$date"}}},
         {"$group": {"_id": "$date", "count": {"$sum": 1}}},
         {"$sort": {"_id": 1}},
         {"$project": {"date": "$_id", "count": "$count"}},
     ]
-    result = aggregate_collection(cluster, database, collection, aggregate_pipeline)
+    result = aggregate_collection(
+        cluster, database, collection, aggregate_pipeline
+    )
     print(list(result)[0])
 
 

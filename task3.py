@@ -15,7 +15,9 @@ def solve_task3_1():
     """
     Solves subtask 3.1 of the Hackathon
     """
-    base_url = os.path.join(GITHUB_API_ENTRYPOINT, "repos", "google", "jax", "issues")
+    base_url = os.path.join(
+        GITHUB_API_ENTRYPOINT, "repos", "google", "jax", "issues"
+    )
     retrieve_conditions = ["state=all"]
     data = retrieve_data_from_url(base_url, retrieve_conditions, 1, 1000)
     store_collection_into_db(
@@ -70,7 +72,9 @@ def solve_task3():
             "answer": str(best_comment["body"]),
         }
     }
-    client = connect_cluster_mongodb(CLUSTER_NAME, MONGODB_USERNAME, MONGODB_PASSWORD)
+    client = connect_cluster_mongodb(
+        CLUSTER_NAME, MONGODB_USERNAME, MONGODB_PASSWORD
+    )
     database = connect_database(client, DATABASE_NAME)
     collection = connect_collection(database, "answer")
     collection.insert_one(submission)

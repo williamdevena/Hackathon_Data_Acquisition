@@ -2,11 +2,8 @@
 This module contains the functions to retrieve data from urls
 """
 
-import numpy as np
-import pandas as pd
 import requests
 from urllib.parse import urljoin
-import os
 import logging
 import sys
 
@@ -21,7 +18,9 @@ AUTH = (GITHUB_USERNAME, GITHUB_TOKEN)
 logging.basicConfig(level=logging.INFO)
 
 
-def retrieve_data_from_url(base_url, conditions=[], start_page=1, max_page=100):
+def retrieve_data_from_url(
+    base_url, conditions=[], start_page=1, max_page=100
+):
     """
     Retrieves the data from a url
 
@@ -34,7 +33,9 @@ def retrieve_data_from_url(base_url, conditions=[], start_page=1, max_page=100):
         - array_total_data (array): Contains all the data in the form of Dictionaries
     """
 
-    array_total_data = []  # array that contains all the repos in the form of a Dict
+    array_total_data = (
+        []
+    )  # array that contains all the repos in the form of a Dict
     logging.info(f"Starting retrieving data from {base_url}")
     page = start_page
     while True:
@@ -70,6 +71,7 @@ def request_json_page_data(base_url, conditions, page, per_page):
         condition_string = "&" + condition
         url_page += condition_string
     response = send_request(url_page, auth=AUTH)
+    print(response)
     json_data = response.json()
 
     return json_data
@@ -89,9 +91,7 @@ def send_request(url, auth):
     response = requests.get(url, auth=AUTH, timeout=10)
     response.raise_for_status()
     if response.status_code != 200:
-        msg = (
-            f"Unexpected exception occurred with status code {response.status_code}.\n"
-        )
+        msg = f"Unexpected exception occurred with status code {response.status_code}.\n"
         msg += f"The suspected reason was {response.reason}"
         raise ValueError(msg)
 
@@ -100,7 +100,9 @@ def send_request(url, auth):
 
 def main():
     base_url = "https://api.github.com/repos/google/jax/commits"
-    data = retrieve_data_from_url(base_url, 1, 1000)
+    data = retrieve_data_from_url(
+        base_url=base_url, conditions=[], start_page=1, max_page=1000
+    )
     print(data[0])
 
 

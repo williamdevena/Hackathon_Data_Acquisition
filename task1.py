@@ -7,7 +7,6 @@ from src.storing import *
 from src.statistics import *
 from src.reading import *
 from src.costants import (
-    ORG,
     CLUSTER_NAME,
     DATABASE_NAME,
     COLLECTION_NAME_REPOS,
@@ -21,14 +20,18 @@ def solve_task1_1():
     """
     base_url = os.path.join(GITHUB_API_ENTRYPOINT, "orgs", "google", "repos")
     data = retrieve_data_from_url(base_url)
-    store_collection_into_db(CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME_REPOS, data)
+    store_collection_into_db(
+        CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME_REPOS, data
+    )
 
 
 def solve_task1_2_3_4():
     """
     Solves subtask 1.2, 1.3 and 1.4 of the Hackathon
     """
-    collection = read_collection(CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME_REPOS)
+    collection = read_collection(
+        CLUSTER_NAME, DATABASE_NAME, COLLECTION_NAME_REPOS
+    )
     df = pd.DataFrame(list(collection))
     stargazers_distribution = df["stargazers_count"]
     stats = aggregate_statistics(stargazers_distribution)
@@ -57,7 +60,9 @@ def solve_task1():
             "percentile_95": float(stats["percentile"]["95"]),
         }
     }
-    client = connect_cluster_mongodb(CLUSTER_NAME, MONGODB_USERNAME, MONGODB_PASSWORD)
+    client = connect_cluster_mongodb(
+        CLUSTER_NAME, MONGODB_USERNAME, MONGODB_PASSWORD
+    )
     database = connect_database(client, DATABASE_NAME)
     collection = connect_collection(database, "answer")
     collection.insert_one(submission)

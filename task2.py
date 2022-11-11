@@ -7,7 +7,6 @@ from src.storing import *
 from src.statistics import *
 from src.visualizing import *
 from src.costants import (
-    ORG,
     CLUSTER_NAME,
     DATABASE_NAME,
     COLLECTION_NAME_JAX,
