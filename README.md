@@ -1,4 +1,4 @@
-# Hackathon_DAPS #1
+# Hackathon Data Acquisition (DAPS module)
 
 Hello and welcome to your first hackathon in the UCL-ELEC0136, Data Acquisition and Processing Systems course at UCL.
 
